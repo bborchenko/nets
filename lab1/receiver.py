@@ -15,27 +15,16 @@ class Receiver:
         self.address_dict = dict
 
     def run(self):
-        host = f'{self.group}'  # Standard loopback interface address (localhost)
-        port = self.port  # Port to listen on (non-privileged ports are > 1023)
+        host = f'{self.group}'
+        port = self.port
 
         with socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP) as s:
-            # s.setsockopt(socket.IPPROTO_IP, socket.IP_MULTICAST_TTL, 32)
-            # s.setsockopt(socket.IPPROTO_IP, socket.IP_MULTICAST_LOOP, 1)
-            # s.bind((host, port))
 
             s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
             s.bind(('', port))
             mreq = struct.pack('4sl', socket.inet_aton(host), socket.INADDR_ANY)
 
             s.setsockopt(socket.IPPROTO_IP, socket.IP_ADD_MEMBERSHIP, mreq)
-            # addrinfo = socket.getaddrinfo(host, None)[0]
-            # s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-            # s.setsockopt(socket.IPPROTO_IP, socket.IP_MULTICAST_TTL, 20)
-            # s.setsockopt(socket.IPPROTO_IP, socket.IP_MULTICAST_LOOP, 1)
-            # s.bind((host, port))
-            # group_bin = socket.inet_pton(addrinfo[0], addrinfo[4][0])
-            # mreq = group_bin + struct.pack('=I', socket.INADDR_ANY)
-            # s.setsockopt(socket.IPPROTO_IP, socket.IP_ADD_MEMBERSHIP, mreq)
             print('Listening at {}'.format(s.getsockname()))
 
             while True:
