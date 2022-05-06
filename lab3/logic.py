@@ -35,7 +35,7 @@ class App:
     async def get_location(self):
         print('Enter the location: ')
         location = input()
-        key = 'c4a39929-cc5a-4959-958c-d26b2be94057'
+        key = '****'
         api_url = f'https://graphhopper.com/api/1/geocode?q={location}&locale=ru&debug=true&key={key}'
 
         async with aiohttp.ClientSession() as session:
